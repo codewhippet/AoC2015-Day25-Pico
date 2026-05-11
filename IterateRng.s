@@ -26,6 +26,7 @@ IterateRngAsm:
     ldr r7, =0xd0000000 // SIO_BASE
     ldr r2, =33554393
     str r2, [r7, #0x64] // SIO_DIV_UDIVISOR_OFFSET
+    ldr r3, =252533
 
     subs r1, r1, #1     // r1 -= 1;
     beq exit            //    if (r1 == 0)
@@ -41,8 +42,6 @@ loop:
     //  b:c0 +
     //  a:d0 +
     //   :ac
-
-    ldr r3, =252533     //		r3 = 252533;
 
     uxth r6, r0         //		r6 = r0 & 0xffff;	// r6 := a
     lsrs r0, r0, #16    //		r0 = r0 >> 16;		// r0 := b
@@ -85,11 +84,10 @@ loop:
 
     // Need an 8 cycle wait before reading results
     adcs r4, r4, r5     //		_addcarry_u32(carry, r4, r5, &r4);		// hi := bd + 0b + 0a
-    ldr r3, =33554393   //		r3 = 33554393;
-    ldr r2, = 4992      //		r2 = 4992;
+    ldr r5, =33554393   //		r5 = 33554393;
+    ldr r2, =4992       //		r2 = 4992;
     muls r2, r2, r4     //		r2 *= r4;		// r2 := hi_mod
-    nop
-    nop
+    ldr r3, =252533     //		r3 = 252533;
 
     // Now we're safe to read the results
     ldr r0, [r7, #0x74]  // SIO_DIV_REMAINDER_OFFSET: Remainder
@@ -97,9 +95,9 @@ loop:
 
     adds r0, r0, r2     //		r0 += r2;		// r0 := hilo_mod
 
-    cmp r0, r3
-    blo skipDecrement   //		if (r0 >= r3)
-    subs r0, r0, r3     //			r0 -= r3;
+    cmp r0, r5
+    blo skipDecrement   //		if (r0 >= r5)
+    subs r0, r0, r5     //			r0 -= r5;
 skipDecrement:
 
     subs r1, r1, #1     //	r1 -= 1;
