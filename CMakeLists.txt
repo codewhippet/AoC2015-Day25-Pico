@@ -38,7 +38,8 @@ pico_sdk_init()
 add_executable(AoC2015-Day25-Pico
     AoC2015-Day25-Pico.cpp
     OptimisedSolution.cpp
-    UnoptimisedSolution.cpp)
+    UnoptimisedSolution.cpp
+    IterateRng.s)
 
 pico_set_program_name(AoC2015-Day25-Pico "AoC2015-Day25-Pico")
 pico_set_program_version(AoC2015-Day25-Pico "0.1")

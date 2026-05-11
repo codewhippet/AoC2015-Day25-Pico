@@ -11,7 +11,8 @@ void PicoInitLED();
 void PicoSetLED(bool on);
 void InitialiseStdIn();
 
-void TimeOptimisedSolution();
+void TimeOptimisedSolutionCpp();
+void TimeOptimisedSolutionAsm();
 void TimeUnoptimisedSolution();
 
 // ----------------------------------------------------------------------------
@@ -22,7 +23,10 @@ int main()
 
 	while (true)
 	{
-		TimeOptimisedSolution();
+		TimeOptimisedSolutionCpp();
+		printf("\n");
+
+		TimeOptimisedSolutionAsm();
 		printf("\n");
 
 		TimeUnoptimisedSolution();
@@ -35,7 +39,8 @@ int main()
 // ----------------------------------------------------------------------------
 
 int32_t Unoptimised_Part1();
-int32_t Optimised_Part1();
+int32_t Optimised_Part1_Cpp();
+int32_t Optimised_Part1_Asm();
 
 // ----------------------------------------------------------------------------
 
@@ -52,13 +57,26 @@ void TimeUnoptimisedSolution()
     }
 }
 
-void TimeOptimisedSolution()
+void TimeOptimisedSolutionCpp()
 {
     {
-        printf("Starting optimised Part 1...\n");
+        printf("Starting optimised C++ Part 1...\n");
 
 		uint64_t startUs = time_us_64();
-		int32_t part1 = Optimised_Part1();
+		int32_t part1 = Optimised_Part1_Cpp();
+		uint64_t durationUs = time_us_64() - startUs;
+
+		printf("  Part1 [%d][%0.3f]\n", part1, durationUs / 1000000.0);	
+    }
+}
+
+void TimeOptimisedSolutionAsm()
+{
+    {
+        printf("Starting optimised Asm Part 1...\n");
+
+		uint64_t startUs = time_us_64();
+		int32_t part1 = Optimised_Part1_Asm();
 		uint64_t durationUs = time_us_64() - startUs;
 
 		printf("  Part1 [%d][%0.3f]\n", part1, durationUs / 1000000.0);	
