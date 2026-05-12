@@ -18,15 +18,17 @@ The 64-bit multiplication is reduced to 32-bit using the [Grid Method](https://e
 
 The 64-bit modulo is reduce to 32-bit using the following identity:
 
-[hi:lo] ≡ 2<sup>32</sup> * hi + lo (mod 33554393)
+[hi:lo] % 33,554,393 ≡ (2<sup>32</sup> * hi + lo) % 33,554,393
 
-[hi:lo] ≡ ((2<sup>32</sup> % 33554393) * hi) + lo (mod 33554393)
+[hi:lo] % 33,554,393 ≡ ((2<sup>32</sup> * hi) % 33,554,393) + (lo % 33,554,393)
 
-[hi:lo] ≡ (4992 * hi) + lo (mod 33554393)
+[hi:lo] % 33,554,393 ≡ (((2<sup>32</sup> % 33,554,393) * hi) + (lo % 33,554,393) // hi will be no higher than 1972
 
-[hi:lo] ≡ (4992 * hi) + (lo % 33554393) (mod 33554393)
+[hi:lo] % 33,554,393 ≡ ((4,992 * hi) % 33,554,393) + (lo % 33,554,393) // 4,992 * hi will be no higher than 9,844,244
 
-4992 * hi is guaranteed to be <33554393 so we only need the one modulo operation on lo, and at most a single -= 33554393.
+[hi:lo] % 33,5543,93 ≡ (4,992 * hi) + (lo % 33,554,393)
+
+We only need the one modulo operation on lo, and then at most a single -= 33,554,393.
 
 Using Asm allows us to make use of the 8 cycle delay to do something productive while waiting for the hardware divider.
 
