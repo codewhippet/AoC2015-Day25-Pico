@@ -16,17 +16,19 @@ Timings will be input dependent, these are the timings for my input:
 
 The 64-bit multiplication is reduced to 32-bit using the [Grid Method](https://en.wikipedia.org/wiki/Grid_method_multiplication#Computing).
 
-The 64-bit modulo is reduce to 32-bit using the following identity:
+The 64-bit modulo is reduced to 32-bit using the following identity:
 
-[hi:lo] % 33,554,393 ≡ (2<sup>32</sup> * hi + lo) % 33,554,393
+- $$[hi{:}lo] \bmod M \equiv (2^{32} \cdot hi + lo) \bmod M$$
 
-[hi:lo] % 33,554,393 ≡ ((2<sup>32</sup> * hi) % 33,554,393) + (lo % 33,554,393)
+- $$[hi{:}lo] \bmod M \equiv ((2^{32} \cdot hi) \bmod M) + (lo \bmod M)$$
 
-[hi:lo] % 33,554,393 ≡ (((2<sup>32</sup> % 33,554,393) * hi) + (lo % 33,554,393) // hi will be no higher than 1972
+- $$[hi{:}lo] \bmod M \equiv ((2^{32} \bmod M) \cdot (hi \bmod M)) + (lo \bmod M)$$
 
-[hi:lo] % 33,554,393 ≡ ((4,992 * hi) % 33,554,393) + (lo % 33,554,393) // 4,992 * hi will be no higher than 9,844,244
+- $$[hi{:}lo] \bmod M \equiv ((4{,}992) \cdot (hi \bmod M)) + (lo \bmod M)$$
 
-[hi:lo] % 33,5543,93 ≡ (4,992 * hi) + (lo % 33,554,393)
+- $$[hi{:}lo] \bmod M \equiv (4{,}992 \cdot hi \bmod M) + (lo \bmod M) \quad \color{gray} \text{'4,992 * hi' will be no higher than 4,992 * 1,927 = 9,844,244.}$$
+
+- $$[hi{:}lo] \bmod M \equiv (4{,}992 \cdot hi) + (lo \bmod M)$$
 
 We only need the one modulo operation on lo, and then at most a single -= 33,554,393.
 
