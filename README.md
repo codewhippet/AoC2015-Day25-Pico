@@ -1,5 +1,13 @@
 # AoC2015-Day25-Pico
 
+**NOTE: This is not the 'proper' way to solve this puzzle!**
+
+When I originally solved this day a while ago I totally forgot that [Modular Exponentiation](https://en.wikipedia.org/wiki/Modular_exponentiation) was a thing. I never noticed the poor performance doing it 'the long way' because a decent x64 will just tear through several million iterations in a relatively small number of milliseconds. But using a proper [modular_power](https://en.wikipedia.org/wiki/Modular_exponentiation#Pseudocode) function, a straightforward implementation with no special optimisation can get the right answer in **~200us** on a Pico.
+
+I'm going to leave this repo here, doing it the long way round, because it's still got some neat stuff in there; even if it's making the classic mistake of producing a very highly optimised version of a slow algorithm!
+
+...
+
 The RNG for [2015 Day 25](https://adventofcode.com/2015/day/25) requires 64-bit maths to get the correct answer. On the [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html#pico1) this has to be implemented in software and the standard library implementations have a lot of overhead when we're trying to do 17M+ multiplies and modulos. We can do better if we manually split the calculation into 32-bit maths and address the divider hardware directly.
 
 ## Results
